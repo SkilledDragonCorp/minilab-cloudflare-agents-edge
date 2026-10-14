@@ -10,7 +10,7 @@
   },
   "packageManager": "bun@1.4.2",
   "scripts": {
-    "test": "bun test",
+    "test": "bun test ./tests",
     "typecheck": "tsc --noEmit",
     "check:skills": "bun run scripts/check-skills.ts",
     "check:banned-phrases": "bun run scripts/check-banned-phrases.ts",

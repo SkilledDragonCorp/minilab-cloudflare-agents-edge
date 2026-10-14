@@ -39,13 +39,14 @@ CI=true pnpm exec nx affected -t test
 ```bash
 cp .env.example .env
 bun install
-bun test
+bun run test
+bun run typecheck
 bun run check:skills
 bun run check:banned-phrases
 bun run validate:policy
 ```
 
-Upstream cohort (needs Node 24, pnpm 11.19.0 via corepack, network, Playwright):
+Upstream cohort (Linux preferred — matches CI `ubuntu-24.04`; needs Node 24, pnpm 11.19.0 via corepack, network, Playwright):
 
 ```bash
 bash scripts/upstream-agents.sh
@@ -55,21 +56,22 @@ bash scripts/upstream-agents.sh
 
 | Check | Command | Result |
 | --- | --- | --- |
-| Lab unit tests | `bun test` | **pass** (6/6) |
+| Lab unit tests | `bun run test` (`bun test ./tests`) | **pass** (6/6) |
+| Typecheck | `bun run typecheck` | **pass** |
 | Skills layout | `bun run check:skills` | **pass** |
 | Banned soft phrases | `bun run check:banned-phrases` | **pass** |
 | Policy fixture | `bun run validate:policy` | **pass** |
 | Upstream install/build/check | `pnpm install --frozen-lockfile` + `pnpm run build` + `pnpm run check` @ `b1e3614bb0ad479b05be2e15909e4ccee6308f37` | **pass** locally |
 | Upstream Playwright | `pnpm exec playwright install --with-deps chromium` | **pass** locally |
-| Upstream nx affected | `CI=true pnpm exec nx affected -t test` | **pass** on ubuntu-24.04 CI (Intel Mac workerd pool flakes locally on perf timeouts / `ECONNRESET`) |
-| Secret scan | gitleaks `v8.30.1` | **pass** locally + CI `security` |
-| Dependency audit | `bun audit --audit-level=high` | **pass** locally + CI `security` |
+| Upstream nx affected | `CI=true pnpm exec nx affected -t test` | **pass** via CI job `upstream` on `ubuntu-24.04` (local Darwin workerd pool flakes under load: perf timeouts / `ECONNRESET`) |
+| Secret scan | gitleaks `v8.30.1` | **pass** (lab tree; vendor gitignored) + CI `security` |
+| Dependency audit | `bun audit --audit-level=high` | **pass** (0 vulns) |
 
 ## Tutorial
 
 1. Copy `.env.example` → `.env` (keyless; optional `CLOUDFLARE_API_TOKEN` for live deploy only).
-2. Run `bun test` and `bun run validate:policy` to confirm the checklist fixture.
-3. Run `bash scripts/upstream-agents.sh` to prove the pin.
+2. Run `bun run test` and `bun run validate:policy` to confirm the checklist fixture.
+3. Run `bash scripts/upstream-agents.sh` on Linux (or rely on CI `upstream`) to prove the pin.
 4. Before shipping an edge agent, open the skill and fill every allowlist key.
 
 ## Using these skills in Claude Code and Cursor
