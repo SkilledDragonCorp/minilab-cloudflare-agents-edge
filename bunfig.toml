@@ -1,0 +1,3 @@
+[test]
+# Prevent Bun from matching vendor/**/tests* path substrings
+root = "./tests"

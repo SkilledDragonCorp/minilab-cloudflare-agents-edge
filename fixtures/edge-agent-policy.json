@@ -1,0 +1,20 @@
+{
+  "secretsFromEnv": [
+    "CLOUDFLARE_API_TOKEN",
+    "DISABLE_TELEMETRY",
+    "DO_NOT_TRACK"
+  ],
+  "toolAllowlist": [
+    "workers.ai",
+    "durable_objects",
+    "kv_get",
+    "kv_put",
+    "r2_get",
+    "fetch_allowlisted"
+  ],
+  "egressAllowlist": [
+    "api.cloudflare.com",
+    "ai.cloudflare.com"
+  ],
+  "noLocalLooseAgent": true
+}

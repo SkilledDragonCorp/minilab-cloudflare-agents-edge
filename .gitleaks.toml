@@ -1,0 +1,10 @@
+title = "minilab-cloudflare-agents-edge"
+
+[extend]
+useDefault = true
+
+# Documented optional env name only — no secret values in this repo.
+[[allowlists]]
+description = "Placeholder optional token name in .env.example (no value)"
+paths = ['''^\.env\.example$''']
+regexes = ['''(?i)CLOUDFLARE_API_TOKEN''']
