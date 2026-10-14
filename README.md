@@ -55,13 +55,15 @@ bash scripts/upstream-agents.sh
 
 | Check | Command | Result |
 | --- | --- | --- |
-| Lab unit tests | `bun run test` | **pass** (6/6) |
+| Lab unit tests | `bun test` | **pass** (6/6) |
 | Skills layout | `bun run check:skills` | **pass** |
 | Banned soft phrases | `bun run check:banned-phrases` | **pass** |
 | Policy fixture | `bun run validate:policy` | **pass** |
-| Upstream PR CI | `bash scripts/upstream-agents.sh` | CI `upstream` job (ubuntu-24.04) |
-| Secret scan | gitleaks `v8.30.1` | CI `security` job |
-| Dependency audit | `bun audit --audit-level=high` | CI `security` job |
+| Upstream install/build/check | `pnpm install --frozen-lockfile` + `pnpm run build` + `pnpm run check` @ `b1e3614bb0ad479b05be2e15909e4ccee6308f37` | **pass** locally |
+| Upstream Playwright | `pnpm exec playwright install --with-deps chromium` | **pass** locally |
+| Upstream nx affected | `CI=true pnpm exec nx affected -t test` | CI `upstream` job on ubuntu-24.04 (Intel Mac workerd pool flakes on perf timeouts / `ECONNRESET`) |
+| Secret scan | gitleaks `v8.30.1` | **pass** locally + CI `security` |
+| Dependency audit | `bun audit --audit-level=high` | **pass** locally + CI `security` |
 
 ## Tutorial
 

@@ -48,10 +48,12 @@ pnpm run check
 pnpm exec playwright install --with-deps chromium
 
 # after nx-set-shas (or export NX_BASE / NX_HEAD for the PR base):
-# Lab equivalent of nrwl/nx-set-shas@v5 outside an agents PR: full-history
-# clone, BASE = root commit, HEAD = pin, so affected covers the workspace.
+# Lab equivalent of nrwl/nx-set-shas@v5 outside an agents PR (push fallback
+# when last-successful SHA is unavailable): BASE = HEAD~1, HEAD = pin.
+# Override NX_BASE/NX_HEAD in the environment to widen or narrow the range.
+# Full-history clone is required so git can resolve the ancestry.
 if [[ -z "${NX_BASE:-}" ]]; then
-  export NX_BASE="$(git rev-list --max-parents=0 HEAD)"
+  export NX_BASE="$(git rev-parse HEAD~1)"
 fi
 if [[ -z "${NX_HEAD:-}" ]]; then
   export NX_HEAD="$(git rev-parse HEAD)"
